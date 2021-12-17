@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductServiceIntr {
 
 	@Override
 	public List<Product> getMaxSoldProduct() {
-		
+
 		return productRepository.getByQuantitySold();
 
 	}
