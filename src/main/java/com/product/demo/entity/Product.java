@@ -1,5 +1,7 @@
 package com.product.demo.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +16,13 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class Product {
-	
+public class Product implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7990990475992677604L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ProductId")
@@ -26,5 +33,5 @@ public class Product {
 	private String productName;
 	@Column(name = "QuantitySold")
 	private Long quantitySold;
-	
+
 }

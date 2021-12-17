@@ -13,11 +13,8 @@ import com.product.demo.entity.Product;
 import com.product.demo.request.ProductRequest;
 import com.product.demo.service.ProductServiceIntr;
 
-import lombok.extern.slf4j.Slf4j;
-
 @RestController
 @RequestMapping("/api")
-@Slf4j
 public class ProductController {
 
 	@Autowired
@@ -25,8 +22,7 @@ public class ProductController {
 
 	@PostMapping("/products")
 	public Product createProduct(@RequestBody ProductRequest productRequest) {
-		
-		log.info("inside createProduct " + productRequest.toString());
+
 		return productServiceIntr.createProduct(productRequest);
 	}
 
