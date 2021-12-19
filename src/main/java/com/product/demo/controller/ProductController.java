@@ -4,17 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.product.demo.entity.Product;
 import com.product.demo.request.ProductRequest;
+import com.product.demo.response.StatusResponse;
 import com.product.demo.service.ProductServiceIntr;
 
 @RestController
@@ -24,11 +22,23 @@ public class ProductController {
 	@Autowired
 	private ProductServiceIntr productServiceIntr;
 
+	StatusResponse statusResponse = new StatusResponse();
+
 	// create new product
 	@PostMapping("/product")
-	public Product createProduct(@RequestBody ProductRequest productRequest) {
+	public StatusResponse createProduct(@RequestBody ProductRequest productRequest) {
 
-		return productServiceIntr.createProduct(productRequest);
+		if (!productServiceIntr.isExist(productRequest)) {
+			productServiceIntr.createProduct(productRequest);
+
+			statusResponse.setMessage("Product create successfully..");
+			statusResponse.setStatus("Ok..");
+			return statusResponse;
+		}
+
+		statusResponse.setMessage("Product already exists.. ");
+		statusResponse.setStatus("Not ok.. ");
+		return statusResponse;
 	}
 
 	// get max sold products
@@ -37,7 +47,6 @@ public class ProductController {
 
 		return productServiceIntr.getMaxSoldProduct();
 	}
-	
 
 //	// get all product
 //	@GetMapping("/products")

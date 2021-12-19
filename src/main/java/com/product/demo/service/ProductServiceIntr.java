@@ -13,6 +13,8 @@ public interface ProductServiceIntr {
 
 	ResponseEntity<List<Product>> getMaxSoldProduct();
 
+	boolean isExist(ProductRequest productRequest);
+
 //	ResponseEntity<Product> updateProduct(ProductRequest productRequest);
 //
 //	ResponseEntity<List<Product>> getAllProducts();
@@ -20,7 +22,5 @@ public interface ProductServiceIntr {
 //	ResponseEntity<String> deleteProductById(Long productId);
 //
 //	ResponseEntity<List<Product>> getByProductName(String productName);
-
-	
 
 }

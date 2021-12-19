@@ -1,6 +1,6 @@
 package com.product.demo.response;
 
-public class ProductStatusResponse {
+public class StatusResponse {
 
 	private String Message;
 	private String Status;
@@ -23,7 +23,7 @@ public class ProductStatusResponse {
 
 	@Override
 	public String toString() {
-		return "ProductStatusResponse [Message=" + Message + ", Status=" + Status + "]";
+		return "StatusResponse [Message=" + Message + ", Status=" + Status + "]";
 	}
 
 }
