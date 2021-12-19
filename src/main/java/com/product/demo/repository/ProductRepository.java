@@ -14,4 +14,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	@Query(value = "select *from product where quantity_sold=(select Max(quantity_sold) from product)", nativeQuery = true)
 	List<Product> getByQuantitySold();
 
+	List<Product> getByProductName(String productName);
+
+	
+
 }

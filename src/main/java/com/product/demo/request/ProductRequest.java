@@ -16,6 +16,7 @@ public class ProductRequest implements Serializable {
 	 */
 	private static final long serialVersionUID = -6475613409199084558L;
 	
+	private Long productId;
 	private Long Price;
 	private String productName;
 	private Long quantitySold;
