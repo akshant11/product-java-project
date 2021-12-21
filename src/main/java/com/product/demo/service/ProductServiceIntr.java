@@ -5,22 +5,22 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.product.demo.entity.Product;
-import com.product.demo.request.ProductRequest;
+import com.product.demo.request.ProductDto;
 
 public interface ProductServiceIntr {
 
-	Product createProduct(ProductRequest productRequest);
+	ProductDto createProduct(ProductDto productDto);
 
 	ResponseEntity<List<Product>> getMaxSoldProduct();
 
-	boolean isExist(ProductRequest productRequest);
+	boolean isExist(ProductDto productDto);
 
-//	ResponseEntity<Product> updateProduct(ProductRequest productRequest);
-//
-//	ResponseEntity<List<Product>> getAllProducts();
-//
-//	ResponseEntity<String> deleteProductById(Long productId);
-//
-//	ResponseEntity<List<Product>> getByProductName(String productName);
+	ResponseEntity<Product> updateProduct(ProductDto productDto);
+
+	ResponseEntity<List<Product>> getAllProducts();
+
+	ResponseEntity<String> deleteProductById(Long productId);
+
+	ResponseEntity<Product> getByProductName(String productName);
 
 }
