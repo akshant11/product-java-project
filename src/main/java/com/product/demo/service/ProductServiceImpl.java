@@ -1,7 +1,6 @@
 package com.product.demo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,9 @@ public class ProductServiceImpl implements ProductServiceIntr {
 
 	ObjectMapper objectMapper = new ObjectMapper();
 
+	
 	@Override
+	// create new product
 	public ProductDto createProduct(ProductDto productDto) {
 
 		Product product = objectMapper.convertValue(productDto, Product.class);
@@ -31,6 +32,7 @@ public class ProductServiceImpl implements ProductServiceIntr {
 	}
 
 	@Override
+	// get max sold product
 	public ResponseEntity<List<Product>> getMaxSoldProduct() {
 
 		if (!productRepository.getByQuantitySold().isEmpty()) {
@@ -40,6 +42,7 @@ public class ProductServiceImpl implements ProductServiceIntr {
 	}
 
 	@Override
+	// check product exist or not
 	public boolean isExist(ProductDto productDto) {
 
 		if (!ObjectUtils.isEmpty(productRepository.getByProductName(productDto.getProductName()))) {
@@ -49,6 +52,7 @@ public class ProductServiceImpl implements ProductServiceIntr {
 	}
 
 	@Override
+	// update product  by id
 	public ResponseEntity<Product> updateProduct(ProductDto productRequest) {
 
 		if (productRepository.findById(productRequest.getProductId()).isPresent()) {
@@ -59,6 +63,7 @@ public class ProductServiceImpl implements ProductServiceIntr {
 	}
 
 	@Override
+	// get all product
 	public ResponseEntity<List<Product>> getAllProducts() {
 
 		if (!productRepository.findAll().isEmpty()) {
@@ -68,6 +73,7 @@ public class ProductServiceImpl implements ProductServiceIntr {
 	}
 
 	@Override
+	// delete product by id
 	public ResponseEntity<String> deleteProductById(Long productId) {
 
 		productRepository.deleteById(productId);
@@ -76,6 +82,7 @@ public class ProductServiceImpl implements ProductServiceIntr {
 	}
 
 	@Override
+	// get by product name
 	public ResponseEntity<Product> getByProductName(String productName) {
 
 		if (!ObjectUtils.isEmpty(productRepository.getByProductName(productName))) {

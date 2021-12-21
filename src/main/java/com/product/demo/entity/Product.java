@@ -17,10 +17,7 @@ import lombok.ToString;
 @ToString
 @Entity
 public class Product implements Serializable {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 7990990475992677604L;
 
 	@Id
