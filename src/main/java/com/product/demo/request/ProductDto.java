@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class ProductRequest implements Serializable {
+public class ProductDto implements Serializable {
 	
 	/**
 	 * 

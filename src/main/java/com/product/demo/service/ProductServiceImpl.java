@@ -1,8 +1,7 @@
 package com.product.demo.service;
 
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,7 @@ import org.springframework.util.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.product.demo.entity.Product;
 import com.product.demo.repository.ProductRepository;
-import com.product.demo.request.ProductRequest;
+import com.product.demo.request.ProductDto;
 
 @Service
 public class ProductServiceImpl implements ProductServiceIntr {
@@ -21,77 +20,68 @@ public class ProductServiceImpl implements ProductServiceIntr {
 	@Autowired
 	private ProductRepository productRepository;
 
-	@Override
-	public Product createProduct(ProductRequest productRequest) {
+	ObjectMapper objectMapper = new ObjectMapper();
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		Product product = objectMapper.convertValue(productRequest, Product.class);
-		return productRepository.save(product);
+	@Override
+	public ProductDto createProduct(ProductDto productDto) {
+
+		Product product = objectMapper.convertValue(productDto, Product.class);
+		productRepository.save(product);
+		return objectMapper.convertValue(productRepository.save(product), ProductDto.class);
 	}
 
 	@Override
 	public ResponseEntity<List<Product>> getMaxSoldProduct() {
 
-		List<Product> op = (List<Product>) productRepository.getByQuantitySold();
-		if (!op.isEmpty()) {
-			return ResponseEntity.ok(op);
+		if (!productRepository.getByQuantitySold().isEmpty()) {
+			return ResponseEntity.ok(productRepository.getByQuantitySold());
 		}
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	@Override
-	public boolean isExist(ProductRequest productRequest) {
+	public boolean isExist(ProductDto productDto) {
 
-		List<Product>list = productRepository.findAll().stream()
-				.filter(product -> product.getProductName().equalsIgnoreCase(productRequest.getProductName()))
-				.collect(Collectors.toList());
-
-		if (!ObjectUtils.isEmpty(list)) {
+		if (!ObjectUtils.isEmpty(productRepository.getByProductName(productDto.getProductName()))) {
 			return true;
 		}
 		return false;
 	}
 
-	//
-	// @Override
-	// public ResponseEntity<Product> updateProduct(ProductRequest productRequest) {
-	//
-	// Optional<Product> product =
-	// productRepository.findById(productRequest.getProductId());
-	// if (product.isPresent()) {
-	// ObjectMapper objectMapper = new ObjectMapper();
-	// Product isProduct = objectMapper.convertValue(productRequest, Product.class);
-	// return ResponseEntity.ok(productRepository.save(isProduct));
-	// }
-	// return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	// }
-	//
-	// @Override
-	// public ResponseEntity<List<Product>> getAllProducts() {
-	//
-	// List<Product> producta = productRepository.findAll();
-	// if (!producta.isEmpty()) {
-	// return ResponseEntity.ok(producta);
-	// }
-	// return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	// }
-	//
-	// @Override
-	// public ResponseEntity<String> deleteProductById(Long productId) {
-	//
-	// productRepository.deleteById(productId);
-	// return new ResponseEntity<String>("Product id not excits in table",
-	// HttpStatus.NO_CONTENT);
-	//
-	// }
-	//
-	// @Override
-	// public ResponseEntity<List<Product>> getByProductName(String productName) {
-	//
-	// if (!ObjectUtils.isEmpty(productRepository.getByProductName(productName))) {
-	// return ResponseEntity.ok(productRepository.getByProductName(productName));
-	// }
-	// return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	// }
+	@Override
+	public ResponseEntity<Product> updateProduct(ProductDto productRequest) {
+
+		if (productRepository.findById(productRequest.getProductId()).isPresent()) {
+			Product isProduct = objectMapper.convertValue(productRequest, Product.class);
+			return ResponseEntity.ok(productRepository.save(isProduct));
+		}
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	@Override
+	public ResponseEntity<List<Product>> getAllProducts() {
+
+		if (!productRepository.findAll().isEmpty()) {
+			return ResponseEntity.ok(productRepository.findAll());
+		}
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	@Override
+	public ResponseEntity<String> deleteProductById(Long productId) {
+
+		productRepository.deleteById(productId);
+		return new ResponseEntity<String>("Product id not excits in table", HttpStatus.NO_CONTENT);
+
+	}
+
+	@Override
+	public ResponseEntity<Product> getByProductName(String productName) {
+
+		if (!ObjectUtils.isEmpty(productRepository.getByProductName(productName))) {
+			return ResponseEntity.ok(productRepository.getByProductName(productName));
+		}
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
 
 }
